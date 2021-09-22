@@ -229,6 +229,7 @@ class CliRunner
 					--section <name>  Only deploys the named section.
 					--generate        Only generates deployment file.
 					--no-progress     Hide the progress indicators.
+					--remote <url>    Specify remote endpoint
 
 				XX,
 			[
@@ -259,6 +260,15 @@ class CliRunner
 		$this->batches = isset($config['remote']) && is_string($config['remote'])
 			? ['' => $config]
 			: array_filter($config, 'is_array');
+
+		if (isset($options['--remote'])) {
+			if (isset($config['remote'])) {
+				throw new \Exception("Cannot use --remote parameter if remote also exists in config file.");
+			}
+
+			$config['remote'] = $options['--remote'];
+			$this->batches = ['' => $config];
+		}
 
 		if (isset($options['--section'])) {
 			$section = $options['--section'];
