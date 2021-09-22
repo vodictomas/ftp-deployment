@@ -262,13 +262,10 @@ class CliRunner
 			: array_filter($config, 'is_array');
 
 		if (isset($options['--remote'])) {
-			if (isset($config['remote'])) {
-				throw new \Exception("Cannot use --remote parameter if remote also exists in config file.");
-			}
-
-			$config['remote'] = $options['--remote'];
-			$this->batches = ['' => $config];
-		}
+			array_walk($this->batches, function (&$item) use ($options) {
+				$item['remote'] = $options['--remote'];
+			});
+		};
 
 		if (isset($options['--section'])) {
 			$section = $options['--section'];
