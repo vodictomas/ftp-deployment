@@ -262,10 +262,10 @@ class CliRunner
 			: array_filter($config, 'is_array');
 
 		if (isset($options['--remote'])) {
-			array_walk($this->batches, function (&$item) use ($options) {
-				$item['remote'] = $options['--remote'];
-			});
-		};
+			foreach ($this->batches as $name => $batch) {
+				$this->batches[$name]['remote'] = $options['--remote'];
+			}
+		}
 
 		if (isset($options['--section'])) {
 			$section = $options['--section'];
